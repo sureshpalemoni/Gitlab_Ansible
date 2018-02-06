@@ -27,6 +27,7 @@ Example: My Main playbook looks like below:
 In the file add:
 
 \---
+
 ansible_ssh_user: centos
 
 **centos is my username - add yours, how ansible should ssh to the destination server
