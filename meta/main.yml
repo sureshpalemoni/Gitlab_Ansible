@@ -35,10 +35,10 @@ galaxy_info:
   platforms:
    - name: centos
      versions:
-     - 7
+     - all
    - name: redhat
      versions:
-     - 7
+     - all
    
   #   versions:
   #   - all
