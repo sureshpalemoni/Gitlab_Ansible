@@ -1,0 +1,50 @@
+---
+
+- name: Install dependencies
+  yum: 
+    name: "{{ item }}" 
+    state: latest
+  with_items:
+    - curl
+    - policycoreutils-python
+    - openssh-server
+    - cronie
+    - postfix
+    - firewalld
+  tags:
+    - pre-reqs
+
+- name: start required services
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - sshd
+    - postfix
+    - firewalld
+  tags:
+    - services
+
+- name: get the gitlab Package repository
+  shell: curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh > gitlb.sh
+
+- name: execute gitl script
+  shell: cat gitlb.sh | bash -
+
+- name: install the gitlab
+  yum:
+    name: gitlab-ee
+    state: present
+  tags:
+    - gitlab
+
+- name: poen firewall ports
+  firewalld:
+    permanent: true
+    service: "{{ item }}"
+    state: enabled
+    immediate: yes
+  with_items:
+    - http
+    - https
